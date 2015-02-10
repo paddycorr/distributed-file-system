@@ -48,8 +48,14 @@ class FileServer():
                 response = "OK: NAME={} HOST={} PORT={}".format(self.name, self.host, self.port)
             elif command == "CREATE":
                 response = processfiles.CREATE(parameters)
+                s=socket.socket(socket.AF_INIT, socket.SOCK_STREAM)
+                s.connect((self.host, self.directoryServer))
+                s.send("REGISTERFILE fserver={}:{} file={}".format(self.host, self.port, parameters.split(" ")[0].split("=")[1]))
             elif command == "REMOVE":
                 response = processfiles.REMOVE(parameters)
+                s=socket.socket(socket.AF_INIT, socket.SOCK_STREAM)
+                s.connect((self.host, self.directoryServer))
+                s.send("REMOVEFILE fserver={}:{} file={}".format(self.host, self.port, parameters.split(" ")[0].split("=")[1])) 
             elif command == "WRITE":
                 response = processfiles.WRITE(parameters)
             elif command == "READ":
