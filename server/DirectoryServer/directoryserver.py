@@ -3,7 +3,6 @@ from thread import *
 import threading
 import os
 import hashlib
-from FileServer.nfs import FileServer
 
 class DirectoryServer():
 
@@ -50,6 +49,15 @@ class DirectoryServer():
                     response = "OK: Found file on {}".format(self.files[filename])
                 else:
                     response = "ERROR: File not found"
+            elif command == "REGISTERFILE": 
+                print "registering file"
+                servername = parameters.split(" ")[0].split("=")[1]
+                filename = parameters.split(" ")[1].split("=")[1] 
+                self.files[filename] = servername
+            elif command == "REMOVEFILE":
+                print "removing file" 
+                filename = parameters.split(" ")[0].split("=")[1] 
+                del(self.files[filename])
             elif command == "KILL_SERVICE":
                 keepalive=False
                 os._exit

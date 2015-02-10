@@ -1,10 +1,7 @@
-__author__ = 'paddycorr'
 import socket
 from thread import *
 import threading
 import os
-from FileServer.nfs import FileServer
-
 
 class LockingServer():
 
@@ -13,7 +10,6 @@ class LockingServer():
         self.name = name
         self.host = host
         self.semaphore = threading.BoundedSemaphore(value=max_threads)
-        self.fileLoc = os.path.expanduser(self.fileLoc)
         self.locked={}
 
 
@@ -21,7 +17,7 @@ class LockingServer():
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((self.host, self.port))
         s.listen(1)
-        print "Directory Server: {}, {}:{}".format(self.name,self.host,self.port)
+        print "Locking Server: {}, {}:{}".format(self.name,self.host,self.port)
 
         while(1):
             conn, addr = s.accept()
